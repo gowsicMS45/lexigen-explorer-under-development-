@@ -166,8 +166,6 @@ body.lx-body {
   overflow-x: hidden;
 }
 
-body.lx-body, body.lx-body * { cursor: none; }
-@media (pointer: coarse) { body.lx-body, body.lx-body * { cursor: auto !important; } }
 
 .lx-app { position: relative; min-height: 100vh; }
 

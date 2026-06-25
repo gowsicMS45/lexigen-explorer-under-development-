@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Background } from "@/components/lexigen/Background";
-import { Cursor } from "@/components/lexigen/Cursor";
+
 import { Loading } from "@/components/lexigen/Loading";
 import { Header, type View } from "@/components/lexigen/Header";
 import {
@@ -43,7 +43,6 @@ function LexiGen() {
   return (
     <div className="lx-app">
       <Background />
-      <Cursor />
       {loading && <Loading onDone={() => setLoading(false)} />}
       <Header view={view} setView={setView} />
       <main className="lx-main">
