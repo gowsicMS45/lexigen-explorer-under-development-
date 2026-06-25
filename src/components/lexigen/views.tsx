@@ -18,6 +18,27 @@ import {
   toggleSaved,
   useAppState,
 } from "@/lib/lexigen-store";
+import { CountUp } from "./CountUp";
+
+function burst(x: number, y: number) {
+  const colors = ["#6366f1", "#8b5cf6", "#a855f7", "#ec4899"];
+  const wrap = document.createElement("div");
+  wrap.className = "lx-burst";
+  wrap.style.left = `${x}px`;
+  wrap.style.top = `${y}px`;
+  for (let i = 0; i < 16; i++) {
+    const p = document.createElement("span");
+    const angle = (Math.PI * 2 * i) / 16;
+    const dist = 60 + Math.random() * 60;
+    p.style.setProperty("--dx", `${Math.cos(angle) * dist}px`);
+    p.style.setProperty("--dy", `${Math.sin(angle) * dist}px`);
+    p.style.background = colors[i % colors.length];
+    p.style.boxShadow = `0 0 10px ${colors[i % colors.length]}`;
+    wrap.appendChild(p);
+  }
+  document.body.appendChild(wrap);
+  setTimeout(() => wrap.remove(), 900);
+}
 
 function useReveal() {
   useEffect(() => {
