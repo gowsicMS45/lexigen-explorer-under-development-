@@ -603,3 +603,99 @@ body.lx-body {
 .lx-textarea:focus { border-color: rgba(99,102,241,0.6); box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
 .lx-notes-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 
+/* ===== Live interactions ===== */
+
+/* Orb parallax follows the mouse */
+.lx-orb-1 { transform: translate(var(--lx-px, 0), var(--lx-py, 0)); }
+.lx-orb-2 { transform: translate(calc(var(--lx-px, 0) * -1.2), calc(var(--lx-py, 0) * -0.8)); }
+.lx-orb-3 { transform: translate(calc(var(--lx-px, 0) * 0.6), calc(var(--lx-py, 0) * -1.4)); }
+.lx-orb-1, .lx-orb-2, .lx-orb-3 {
+  transition: transform 0.2s linear;
+  animation: none !important;
+}
+
+/* Spotlight glow on cards (mouse-following) */
+.lx-card { overflow: hidden; }
+.lx-card::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(139,92,246,0.18), rgba(99,102,241,0.06) 30%, transparent 60%);
+  opacity: 0; transition: opacity 0.3s ease; z-index: 0;
+}
+.lx-card:hover::before { opacity: 1; }
+.lx-card > * { position: relative; z-index: 1; }
+
+/* Click ripple */
+.lx-ripple {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(255,255,255,0.45), rgba(255,255,255,0) 60%);
+  transform: scale(0); animation: lx-ripple 0.65s ease-out forwards;
+  mix-blend-mode: screen;
+}
+@keyframes lx-ripple {
+  to { transform: scale(1); opacity: 0; }
+}
+
+/* Confetti burst on roll */
+.lx-burst {
+  position: fixed; width: 0; height: 0; pointer-events: none; z-index: 9500;
+}
+.lx-burst span {
+  position: absolute; left: 0; top: 0; width: 6px; height: 6px; border-radius: 50%;
+  animation: lx-burst-fly 0.85s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+@keyframes lx-burst-fly {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0.2); opacity: 0; }
+}
+
+/* Animated gradient on H1 words */
+.lx-h1-word {
+  background: linear-gradient(90deg, #f0f0f8 0%, #c4b5fd 40%, #f0f0f8 80%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: lx-word 0.5s ease forwards, lx-h1-shimmer 6s linear infinite;
+}
+@keyframes lx-h1-shimmer {
+  0% { background-position: 0% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Animated gradient sweep on eyebrow */
+.lx-eyebrow {
+  background-size: 200% auto;
+  animation: lx-eyebrow 4s linear infinite;
+}
+@keyframes lx-eyebrow {
+  0% { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Topic card subtle float on hover */
+.lx-topic-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.lx-topic-card:hover { transform: translateY(-4px); }
+
+/* Pulse on active tab badge */
+.lx-badge { animation: lx-badge-pulse 2.4s ease-in-out infinite; }
+@keyframes lx-badge-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(139,92,246,0.5); }
+  50% { box-shadow: 0 0 0 6px rgba(139,92,246,0); }
+}
+
+/* Composer focus glow on whole row */
+.lx-composer:focus-within .lx-send {
+  box-shadow: 0 0 20px rgba(139,92,246,0.7), 0 0 40px rgba(168,85,247,0.4);
+}
+
+/* Smoother progress fill shimmer */
+.lx-progress-fill { position: relative; overflow: hidden; }
+.lx-progress-fill::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+  transform: translateX(-100%); animation: lx-shimmer 2.2s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
