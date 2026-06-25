@@ -58,9 +58,10 @@ export function ExploreView() {
     setTimeout(() => chatRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
   };
 
-  const roll = () => {
+  const roll = (e?: React.MouseEvent) => {
     const t = rollTopic(category);
     const c = category === "All" ? findCategory(t) : category;
+    if (e) burst(e.clientX, e.clientY);
     openTopic(t, c);
   };
 
