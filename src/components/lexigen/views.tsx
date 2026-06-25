@@ -18,6 +18,27 @@ import {
   toggleSaved,
   useAppState,
 } from "@/lib/lexigen-store";
+import { CountUp } from "./CountUp";
+
+function burst(x: number, y: number) {
+  const colors = ["#6366f1", "#8b5cf6", "#a855f7", "#ec4899"];
+  const wrap = document.createElement("div");
+  wrap.className = "lx-burst";
+  wrap.style.left = `${x}px`;
+  wrap.style.top = `${y}px`;
+  for (let i = 0; i < 16; i++) {
+    const p = document.createElement("span");
+    const angle = (Math.PI * 2 * i) / 16;
+    const dist = 60 + Math.random() * 60;
+    p.style.setProperty("--dx", `${Math.cos(angle) * dist}px`);
+    p.style.setProperty("--dy", `${Math.sin(angle) * dist}px`);
+    p.style.background = colors[i % colors.length];
+    p.style.boxShadow = `0 0 10px ${colors[i % colors.length]}`;
+    wrap.appendChild(p);
+  }
+  document.body.appendChild(wrap);
+  setTimeout(() => wrap.remove(), 900);
+}
 
 function useReveal() {
   useEffect(() => {
@@ -58,9 +79,10 @@ export function ExploreView() {
     setTimeout(() => chatRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
   };
 
-  const roll = () => {
+  const roll = (e?: React.MouseEvent) => {
     const t = rollTopic(category);
     const c = category === "All" ? findCategory(t) : category;
+    if (e) burst(e.clientX, e.clientY);
     openTopic(t, c);
   };
 
@@ -124,7 +146,7 @@ export function ExploreView() {
         </div>
 
         <div className="lx-actions-row">
-          <button className="lx-roll" onClick={roll}>
+          <button className="lx-roll" onClick={(e) => roll(e)}>
             🎲 Roll Topic
           </button>
           <input
@@ -192,7 +214,7 @@ export function ProgressView() {
       <div className="lx-card lx-streak lx-reveal">
         <div className="lx-flame">🔥</div>
         <div>
-          <div className="lx-streak-count">{state.streak}</div>
+          <div className="lx-streak-count"><CountUp value={state.streak} /></div>
           <div className="lx-muted">Day streak</div>
         </div>
       </div>
@@ -200,19 +222,19 @@ export function ProgressView() {
       <div className="lx-card lx-stats lx-reveal">
         <div className="lx-stats-pills">
           <span className="lx-pill lx-pill-glass lx-stat-learning">
-            Learning · {groups.learning.length}
+            Learning · <CountUp value={groups.learning.length} />
           </span>
           <span className="lx-pill lx-pill-glass lx-stat-understood">
-            Understood · {groups.understood.length}
+            Understood · <CountUp value={groups.understood.length} />
           </span>
           <span className="lx-pill lx-pill-glass lx-stat-mastered">
-            Mastered · {groups.mastered.length}
+            Mastered · <CountUp value={groups.mastered.length} />
           </span>
         </div>
         <div className="lx-progress-bar">
           <div className="lx-progress-fill" style={{ width: `${pct}%` }} />
         </div>
-        <div className="lx-muted">{pct}% mastered</div>
+        <div className="lx-muted"><CountUp value={pct} />% mastered</div>
       </div>
 
       {(["mastered", "understood", "learning"] as const).map((g) =>
