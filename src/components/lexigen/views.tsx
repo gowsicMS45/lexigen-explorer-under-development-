@@ -146,7 +146,7 @@ export function ExploreView() {
         </div>
 
         <div className="lx-actions-row">
-          <button className="lx-roll" onClick={roll}>
+          <button className="lx-roll" onClick={(e) => roll(e)}>
             🎲 Roll Topic
           </button>
           <input
