@@ -1,29 +1,57 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { Background } from "@/components/lexigen/Background";
+import { Cursor } from "@/components/lexigen/Cursor";
+import { Loading } from "@/components/lexigen/Loading";
+import { Header, type View } from "@/components/lexigen/Header";
+import {
+  ExploreView,
+  NotesView,
+  ProgressView,
+  SavedView,
+} from "@/components/lexigen/views";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "LexiGen — Explore any topic, explained your way" },
+      {
+        name: "description",
+        content:
+          "AI-powered learning that explains anything at the level you want — ELI5 to expert, with flashcards, quizzes, and mind maps.",
+      },
+      { property: "og:title", content: "LexiGen — AI Topic Explainer" },
+      {
+        property: "og:description",
+        content:
+          "Roll a topic, pick a level, and let LexiGen explain it. Flashcards, quizzes, mind maps and notes built in.",
+      },
     ],
   }),
-  component: Index,
+  component: LexiGen,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function LexiGen() {
+  const [loading, setLoading] = useState(true);
+  const [view, setView] = useState<View>("explore");
+
+  useEffect(() => {
+    document.body.classList.add("lx-body");
+    return () => document.body.classList.remove("lx-body");
+  }, []);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="lx-app">
+      <Background />
+      <Cursor />
+      {loading && <Loading onDone={() => setLoading(false)} />}
+      <Header view={view} setView={setView} />
+      <main className="lx-main">
+        {view === "explore" && <ExploreView />}
+        {view === "progress" && <ProgressView />}
+        {view === "saved" && <SavedView />}
+        {view === "notes" && <NotesView />}
+      </main>
     </div>
   );
 }
