@@ -214,7 +214,7 @@ export function ProgressView() {
       <div className="lx-card lx-streak lx-reveal">
         <div className="lx-flame">🔥</div>
         <div>
-          <div className="lx-streak-count">{state.streak}</div>
+          <div className="lx-streak-count"><CountUp value={state.streak} /></div>
           <div className="lx-muted">Day streak</div>
         </div>
       </div>
@@ -222,19 +222,19 @@ export function ProgressView() {
       <div className="lx-card lx-stats lx-reveal">
         <div className="lx-stats-pills">
           <span className="lx-pill lx-pill-glass lx-stat-learning">
-            Learning · {groups.learning.length}
+            Learning · <CountUp value={groups.learning.length} />
           </span>
           <span className="lx-pill lx-pill-glass lx-stat-understood">
-            Understood · {groups.understood.length}
+            Understood · <CountUp value={groups.understood.length} />
           </span>
           <span className="lx-pill lx-pill-glass lx-stat-mastered">
-            Mastered · {groups.mastered.length}
+            Mastered · <CountUp value={groups.mastered.length} />
           </span>
         </div>
         <div className="lx-progress-bar">
           <div className="lx-progress-fill" style={{ width: `${pct}%` }} />
         </div>
-        <div className="lx-muted">{pct}% mastered</div>
+        <div className="lx-muted"><CountUp value={pct} />% mastered</div>
       </div>
 
       {(["mastered", "understood", "learning"] as const).map((g) =>
